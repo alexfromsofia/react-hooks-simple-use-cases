@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./App.css";
 import { useFetch } from "./useFetch";
 import { useForm } from "./useForm";
+import { useMeasure } from "./useMeasure";
 
 interface IValues {
   email: "";
@@ -20,10 +21,25 @@ function App() {
   );
   const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
   const inputRef = useRef<HTMLInputElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const rect = useMeasure(divRef, [data]);
 
   return (
     <div className="App">
-      <div>{!data || loading ? "loading..." : data}</div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div ref={divRef}>
+          {!data || loading ? "loading..." : data}
+          <pre>{JSON.stringify(rect, null, 2)}</pre>
+        </div>
+      </div>
       <div>Count: {count}</div>
       <button onClick={() => setCount((c: number) => c + 1)}>Increment</button>
       <>
