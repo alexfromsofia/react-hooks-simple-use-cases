@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "./App.css";
+import { Increment } from "./Increment";
 import { useFetch } from "./useFetch";
 import { useForm } from "./useForm";
 import { useMeasure } from "./useMeasure";
@@ -16,12 +17,16 @@ function App() {
     password: "",
     firstName: "",
   });
+  const favouriteNums = [7, 21, 44, 123];
   const [count, setCount] = useState(() =>
     JSON.parse((window.localStorage.getItem("count") as any) || 0)
   );
   const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
   const inputRef = useRef<HTMLInputElement>(null);
   const [rect, divRef] = useMeasure([data]);
+  const increment = useCallback((n) => setCount((c: number) => c + n), [
+    setCount,
+  ]);
 
   return (
     <div className="App">
@@ -39,7 +44,7 @@ function App() {
         </div>
       </div>
       <div>Count: {count}</div>
-      <button onClick={() => setCount((c: number) => c + 1)}>Increment</button>
+      <Increment onClick={increment} />
       <>
         <input
           ref={inputRef}
@@ -61,6 +66,9 @@ function App() {
           onChange={handleChange}
         />
         <button onClick={() => (inputRef as any).current.focus()}>Focus</button>
+        {favouriteNums.map((n) => (
+          <Increment onClick={increment} n={n} key={n} />
+        ))}
       </>
     </div>
   );
