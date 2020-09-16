@@ -21,9 +21,7 @@ function App() {
   );
   const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
   const inputRef = useRef<HTMLInputElement>(null);
-  const divRef = useRef<HTMLDivElement>(null);
-
-  const rect = useMeasure(divRef, [data]);
+  const [rect, divRef] = useMeasure([data]);
 
   return (
     <div className="App">

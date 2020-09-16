@@ -1,7 +1,10 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
-export const useMeasure = (ref: React.MutableRefObject<any>, deps: any[]) => {
-  const [rect, setRect] = useState<DOMRect | {}>({});
+export const useMeasure = (
+  deps: any[]
+): [DOMRect | undefined, React.RefObject<HTMLDivElement>] => {
+  const [rect, setRect] = useState<DOMRect>();
+  const ref = useRef<HTMLDivElement>(null!);
 
   useLayoutEffect(() => {
     if (!ref || !ref.current) return;
@@ -10,5 +13,5 @@ export const useMeasure = (ref: React.MutableRefObject<any>, deps: any[]) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
-  return rect;
+  return [rect, ref];
 };
