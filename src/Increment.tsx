@@ -1,5 +1,5 @@
 import React from "react";
-import { useCountRenders } from "./useCountRenders";
+import { useCountRenders } from "./hooks/useCountRenders";
 
 interface Props {
   onClick: (n: number) => void;
